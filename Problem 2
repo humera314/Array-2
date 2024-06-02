@@ -1,0 +1,45 @@
+class Solution:
+    #TC:O(n^2)
+    #SC:O(1)
+    def gameOfLife(self, board: List[List[int]]) -> None:
+        """
+        Do not return anything, modify board in-place instead.
+
+        Approach: add the neighbouring cell and if theu turn dead make them 2
+        and if they go alive make them 3 and later replace those value with o and 1
+        """
+        m=len(board)
+        n=len(board[0])
+        
+        #life==>dead=2
+        #death==>life=3
+
+        for i in range(m):
+            for j in range(n):
+                count=self.livecount(board,i,j)
+                if board[i][j]==1:
+                    if count<2 or count>3:
+                        board[i][j]=2
+                
+                else:
+                    if count==3:
+                        board[i][j]=3
+        
+        for i in range(m):
+            for j in range(n):
+                if board[i][j]==2:
+                    board[i][j]=0
+                
+                elif board[i][j]==3:
+                    board[i][j]=1
+
+                    
+    def livecount(self,board, i,j):
+        count=0
+        dirs=[(0,-1),(0,1),(1,0),(-1,0), (-1,-1),(-1,1), (1,-1),(1,1)]
+        for dir in dirs:
+            ni=i+dir[0]
+            nj=j+dir[1]
+            if 0<=ni<len(board) and 0<=nj<len(board[0]) and (board[ni][nj]==1 or board[ni][nj]==2):
+                count+=1
+        return count
